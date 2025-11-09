@@ -1,0 +1,1662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Directory | NIT Andhra Pradesh</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* V14 PROFESSIONAL DESIGN - CLEAN & ATTRACTIVE */
+        :root {
+            /* Professional Color Palette */
+            --bg-primary: #F5F7FA;
+            --bg-secondary: #FFFFFF;
+            --bg-surface: #FFFFFF;
+            --text-primary: #2C3E50;
+            --text-secondary: #7F8C8D;
+            --accent: #0052CC;
+            --accent-hover: #0747A6;
+            --accent-active: #003D99;
+            --border: rgba(0, 0, 0, 0.1);
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+            
+            /* Department Colors - Professional */
+            --dept-biot: #10B981;
+            --dept-chem: #EF4444;
+            --dept-civil: #14B8A6;
+            --dept-cse: #8B5CF6;
+            --dept-eee: #F59E0B;
+            --dept-ece: #3B82F6;
+            --dept-mech: #06B6D4;
+            --dept-mme: #F97316;
+            --dept-sos: #6366F1;
+            --dept-shm: #EC4899;
+            
+            /* Typography */
+            --font-family: 'Inter', -apple-system, 'Segoe UI', Roboto, sans-serif;
+            
+            /* Spacing */
+            --space-xs: 8px;
+            --space-sm: 12px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-2xl: 48px;
+        }
+
+        body[data-theme="dark"] {
+            --bg-primary: #0F1419;
+            --bg-secondary: #242A33;
+            --bg-surface: #242A33;
+            --text-primary: #E2E8F0;
+            --text-secondary: #A0AEC0;
+            --accent: #60A5FA;
+            --accent-hover: #3B82F6;
+            --accent-active: #2563EB;
+            --border: rgba(255, 255, 255, 0.1);
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+            
+            /* Department colors for dark mode */
+            --dept-biot: #34D399;
+            --dept-chem: #F87171;
+            --dept-civil: #2DD4BF;
+            --dept-cse: #A78BFA;
+            --dept-eee: #FBBF24;
+            --dept-ece: #60A5FA;
+            --dept-mech: #22D3EE;
+            --dept-mme: #FB923C;
+            --dept-sos: #818CF8;
+            --dept-shm: #F472B6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            min-height: 100vh;
+        }
+
+        .logo-section {
+            background: #333;
+            padding: 28px 24px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .logo-section img {
+            height: 85px;
+            width: auto;
+            transition: transform 0.2s ease;
+        }
+        
+        .logo-section img:hover {
+            transform: scale(1.03);
+        }
+        
+        .timestamp-display {
+            margin-top: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.08);
+            padding: 10px 20px;
+            border-radius: 8px;
+            max-width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .timestamp-icon {
+            stroke: rgba(255, 255, 255, 0.85);
+            flex-shrink: 0;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .nav-bar {
+            background: #333;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 18px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .nav-brand {
+            display: none;
+        }
+
+        .nav-search {
+            flex: 1;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .theme-toggle {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(1.05);
+        }
+
+        .theme-toggle svg {
+            width: 22px;
+            height: 22px;
+            stroke: #FFFFFF;
+            transition: transform 0.3s ease;
+        }
+        
+        .theme-toggle:hover svg {
+            transform: scale(1.1);
+        }
+        
+        .theme-toggle:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .theme-toggle:disabled:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: none;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .refreshing svg {
+            animation: spin 1s linear infinite;
+        }
+        
+        .toast-container {
+            position: fixed;
+            top: 80px;
+            right: 24px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 400px;
+        }
+        
+        .toast {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px 20px;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideInRight 0.3s ease-out;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        @keyframes slideInRight {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        .toast.success {
+            border-left: 4px solid var(--color-success);
+        }
+        
+        .toast.error {
+            border-left: 4px solid var(--color-error);
+        }
+        
+        .toast.info {
+            border-left: 4px solid var(--color-info);
+        }
+        
+        .toast-icon {
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+        
+        .toast.success .toast-icon {
+            stroke: var(--color-success);
+        }
+        
+        .toast.error .toast-icon {
+            stroke: var(--color-error);
+        }
+        
+        .toast.info .toast-icon {
+            stroke: var(--color-info);
+        }
+        
+        .last-refresh {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .last-refresh .refresh-source {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        
+        .last-refresh .refresh-source.cached {
+            background: rgba(var(--color-info-rgb), 0.15);
+            color: var(--color-info);
+        }
+        
+        .last-refresh .refresh-source.fresh {
+            background: rgba(var(--color-success-rgb), 0.15);
+            color: var(--color-success);
+        }
+        
+        .backend-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-left: 16px;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--color-success);
+        }
+        
+        .status-dot.offline {
+            background: var(--color-error);
+        }
+        
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .loading-content {
+            background: var(--bg-surface);
+            border-radius: 12px;
+            padding: 32px 48px;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .loading-spinner {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 16px;
+            border: 4px solid var(--color-secondary);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        .loading-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+        
+        .loading-subtext {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        
+        /* Design system color variables */
+        :root {
+            --color-success: #10B981;
+            --color-error: #EF4444;
+            --color-info: #3B82F6;
+            --color-secondary: rgba(0, 0, 0, 0.08);
+        }
+        
+        body[data-theme="dark"] {
+            --color-success: #34D399;
+            --color-error: #F87171;
+            --color-info: #60A5FA;
+            --color-secondary: rgba(255, 255, 255, 0.08);
+        }
+
+        .dept-tabs {
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--border);
+            padding: 0 24px;
+            overflow-x: auto;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .dept-tabs-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            gap: 8px;
+        }
+
+        .dept-tab {
+            padding: 16px 22px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s ease;
+            font-family: var(--font-family);
+            white-space: nowrap;
+        }
+
+        .dept-tab:hover {
+            color: var(--text-primary);
+            background: rgba(0, 82, 204, 0.05);
+        }
+
+        .dept-tab.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+            background: rgba(0, 82, 204, 0.08);
+        }
+
+        .dept-tab .count {
+            display: inline-block;
+            margin-left: 8px;
+            padding: 3px 8px;
+            background: rgba(0, 82, 204, 0.1);
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .dept-tab.active .count {
+            background: var(--accent);
+            color: #FFFFFF;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 12px 20px;
+            font-size: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #FFFFFF;
+            font-family: var(--font-family);
+            transition: all 0.2s ease;
+        }
+
+        .search-bar:focus {
+            outline: none;
+            border-color: rgba(96, 165, 250, 0.6);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
+        }
+
+        .search-bar::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 400;
+        }
+
+        .stats {
+            margin-bottom: 32px;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .stats-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        .stats-count {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .faculty-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 28px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .faculty-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-md);
+            animation: scaleIn 0.4s ease-out backwards;
+        }
+
+        .faculty-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-6px);
+        }
+        
+        .faculty-card:hover .faculty-image {
+            transform: scale(1.05);
+        }
+        
+        .faculty-card:hover .faculty-initials {
+            transform: scale(1.1);
+        }
+
+        .faculty-card.hidden {
+            display: none;
+        }
+
+        .faculty-image-wrapper {
+            width: 100%;
+            height: 280px;
+            position: relative;
+            overflow: hidden;
+            background: #F8F9FA;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        body[data-theme="dark"] .faculty-image-wrapper {
+            background: #1A1F2E;
+        }
+
+        .faculty-initials {
+            width: 120px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            font-weight: 700;
+            color: #FFFFFF;
+            background: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0, 82, 204, 0.25);
+            transition: transform 0.3s ease;
+        }
+
+        .faculty-image {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            display: block;
+            transition: transform 0.3s ease;
+            border-radius: 8px;
+        }
+
+        .hod-badge {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            background: #F59E0B;
+            color: #FFFFFF;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+            z-index: 10;
+        }
+
+        .faculty-info {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .faculty-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            line-height: 1.4;
+            letter-spacing: 0.2px;
+        }
+
+        .faculty-title {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            font-weight: 500;
+            line-height: 1.5;
+            letter-spacing: 0.3px;
+        }
+
+        .faculty-department {
+            display: inline-block;
+            background: rgba(0, 82, 204, 0.1);
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.2s ease;
+        }
+        
+        body[data-theme="dark"] .faculty-department {
+            background: rgba(96, 165, 250, 0.15);
+        }
+
+        .faculty-department[data-dept="ece"] { 
+            color: var(--dept-ece);
+            border-color: var(--dept-ece);
+        }
+        .faculty-department[data-dept="cse"] { 
+            color: var(--dept-cse);
+            border-color: var(--dept-cse);
+        }
+        .faculty-department[data-dept="eee"] { 
+            color: var(--dept-eee);
+            border-color: var(--dept-eee);
+        }
+        .faculty-department[data-dept="biot"] { 
+            color: var(--dept-biot);
+            border-color: var(--dept-biot);
+        }
+        .faculty-department[data-dept="chem"] { 
+            color: var(--dept-chem);
+            border-color: var(--dept-chem);
+        }
+        .faculty-department[data-dept="mech"] { 
+            color: var(--dept-mech);
+            border-color: var(--dept-mech);
+        }
+        .faculty-department[data-dept="mme"] { 
+            color: var(--dept-mme);
+            border-color: var(--dept-mme);
+        }
+        .faculty-department[data-dept="sos"] { 
+            color: var(--dept-sos);
+            border-color: var(--dept-sos);
+        }
+        .faculty-department[data-dept="shm"] { 
+            color: var(--dept-shm);
+            border-color: var(--dept-shm);
+        }
+        .faculty-department[data-dept="civil"] { 
+            color: var(--dept-civil);
+            border-color: var(--dept-civil);
+        }
+
+        .faculty-contact {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: var(--accent);
+            font-size: 13px;
+            font-weight: 500;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+            letter-spacing: 0.3px;
+            transition: all 0.3s ease;
+        }
+        
+        .faculty-card:hover .faculty-contact {
+            color: var(--accent-secondary);
+        }
+
+        .phone-icon {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+            transition: transform 0.3s ease;
+        }
+        
+        .faculty-card:hover .phone-icon {
+            transform: rotate(15deg);
+        }
+
+        .faculty-details {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+            text-align: left;
+        }
+        
+        /* Areas of Interest section - Label on own line */
+        .areas-section {
+            margin-bottom: 4px;
+        }
+        
+        .areas-label {
+            display: block;
+            font-weight: 700;
+            font-size: 13px;
+            color: var(--text-primary);
+        }
+        
+        .areas-values {
+            margin-bottom: 16px;
+            padding-left: 0;
+        }
+        
+        .areas-values .areas-text {
+            display: block;
+            color: var(--text-primary);
+            font-weight: 400;
+            line-height: 1.6;
+            font-size: 13px;
+        }
+        
+        .areas-values .detail-value.not-available {
+            display: block;
+            font-style: italic;
+        }
+        
+        /* Contact section - Compact layout */
+        .contact-section {
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+        }
+        
+        .contact-row {
+            margin-bottom: 6px;
+        }
+        
+        .contact-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .faculty-detail-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 4px;
+            margin-bottom: 6px;
+            font-size: 13px;
+            line-height: 1.4;
+            flex-wrap: nowrap;
+        }
+
+        .faculty-detail-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .detail-label {
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: 0.1px;
+            flex-shrink: 0;
+            white-space: nowrap;
+        }
+        body[data-theme="dark"] .detail-label {
+            color: #D6DEE8;
+        }
+        .detail-link {
+            color: var(--accent);
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        body[data-theme="dark"] .detail-link {
+            color: #60A5FA;
+        }
+        .detail-link:hover {
+            color: var(--accent-hover);
+            text-decoration: underline;
+        }
+        .detail-value {
+            color: var(--text-secondary);
+        }
+        .detail-value.not-available {
+            color: #BDBDBD;
+            opacity: 1;
+            font-style: italic;
+        }
+        body[data-theme="dark"] .detail-value.not-available {
+            color: #888B99;
+        }
+        .areas-text {
+            color: var(--text-primary);
+            font-weight: 400;
+            line-height: 1.5;
+            flex: 1;
+            overflow-wrap: break-word;
+        }
+        
+
+
+        .no-results {
+            text-align: center;
+            padding: 64px 24px;
+            color: var(--text-secondary);
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .no-results-icon {
+            margin-bottom: 24px;
+            opacity: 0.25;
+            display: flex;
+            justify-content: center;
+            animation: scaleIn 0.5s ease-out;
+        }
+
+        .no-results-icon svg {
+            width: 96px;
+            height: 96px;
+            stroke: var(--text-secondary);
+        }
+
+        .no-results h3 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+            letter-spacing: 0.5px;
+        }
+
+        .no-results p {
+            font-size: 16px;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            line-height: 1.7;
+        }
+
+        .footer {
+            background: var(--bg-surface);
+            border-top: 1px solid var(--border);
+            padding: 36px 24px;
+            text-align: center;
+            margin-top: 60px;
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            line-height: 1.8;
+        }
+
+        .footer-title {
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+        }
+
+        .faculty-card:nth-child(1) { animation-delay: 0s; }
+        .faculty-card:nth-child(2) { animation-delay: 0.05s; }
+        .faculty-card:nth-child(3) { animation-delay: 0.1s; }
+        .faculty-card:nth-child(4) { animation-delay: 0.15s; }
+        .faculty-card:nth-child(5) { animation-delay: 0.2s; }
+        .faculty-card:nth-child(6) { animation-delay: 0.25s; }
+        .faculty-card:nth-child(7) { animation-delay: 0.3s; }
+        .faculty-card:nth-child(8) { animation-delay: 0.35s; }
+        .faculty-card:nth-child(n+9) { animation-delay: 0.4s; }
+
+        /* CONTAINER PADDING */
+        .container {
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        /* SCROLLBAR STYLING */
+        ::-webkit-scrollbar {
+            width: 12px;
+            height: 12px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 6px;
+            border: 3px solid var(--bg-secondary);
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-hover);
+        }
+        
+        /* SELECTION STYLING */
+        ::selection {
+            background: var(--accent);
+            color: #FFFFFF;
+        }
+        
+        ::-moz-selection {
+            background: var(--accent);
+            color: #FFFFFF;
+        }
+        
+        /* RESPONSIVE DESIGN */
+        @media (max-width: 1200px) {
+            .faculty-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 28px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .faculty-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 24px;
+            }
+            
+            .nav-content {
+                flex-direction: column;
+                gap: 16px;
+            }
+            
+            .nav-search {
+                width: 100%;
+            }
+            
+            .logo-section img {
+                height: 70px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .faculty-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .faculty-image-wrapper {
+                height: 240px;
+            }
+
+            .nav-bar {
+                padding: 12px 16px;
+            }
+            
+            .nav-content {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .container {
+                padding: 32px 16px;
+            }
+
+            .faculty-card {
+                border-radius: 14px;
+            }
+            
+            .dept-tabs {
+                padding: 0 16px;
+            }
+            
+            .dept-tab {
+                padding: 14px 16px;
+                font-size: 13px;
+            }
+            
+            .logo-section {
+                padding: 20px 16px;
+            }
+            
+            .logo-section img {
+                height: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="logo-section">
+        <img src="https://nitandhra.ac.in/main/assets/images/logo_nitanp.webp" alt="NIT Andhra Pradesh Logo">
+        <div class="timestamp-display" id="headerTimestamp" style="display: none;">
+            <svg class="timestamp-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span id="headerTimestampText">Last Refreshed: --</span>
+        </div>
+    </div>
+    <nav class="nav-bar">
+        <div class="nav-content">
+            <div class="nav-search">
+                <input type="text" 
+                       class="search-bar" 
+                       id="searchInput" 
+                       placeholder="Search faculty by name...">
+            </div>
+            <button class="theme-toggle" id="refreshButton" aria-label="Refresh data" title="Refresh faculty data">
+                <svg id="refreshIcon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                </svg>
+            </button>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                <svg id="sunIcon" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="display: none;">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                </svg>
+                <svg id="moonIcon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <div class="dept-tabs">
+        <div class="dept-tabs-inner" id="deptTabs"></div>
+    </div>
+
+    <div class="container">
+        <div class="stats">
+            <div class="stats-text">
+                <div id="lastRefresh" class="last-refresh" style="display: none;"></div>
+                Showing <span class="stats-count" id="visibleCount">0</span> of <span class="stats-count" id="totalCount">0</span> faculty members
+                <span class="backend-status" id="backendStatus" style="display: none;">
+                    <span class="status-dot" id="statusDot"></span>
+                    <span id="statusText">Backend Online</span>
+                </span>
+            </div>
+        </div>
+
+        <div class="faculty-grid" id="facultyGrid"></div>
+
+        <div class="no-results" id="noResults" style="display: none;">
+            <div class="no-results-icon">
+                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+            </div>
+            <h3>No Faculty Found</h3>
+            <p>Try adjusting your search or filter criteria</p>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p class="footer-title">National Institute of Technology Andhra Pradesh</p>
+            <p>© 2025 NIT Andhra Pradesh. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div id="toastContainer" class="toast-container"></div>
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Refreshing Faculty Data</div>
+            <div class="loading-subtext">This may take up to 1 minute...</div>
+        </div>
+    </div>
+
+    <script>
+        const BACKEND_API = 'https://nitanp-faculty-scrape.onrender.com';
+        let currentTheme = 'light';
+        let isRefreshing = false;
+        let backendOnline = false;
+
+        function initTheme() {
+            const savedTheme = getCurrentTheme();
+            currentTheme = savedTheme;
+            applyTheme(currentTheme);
+        }
+
+        function getCurrentTheme() {
+            return currentTheme;
+        }
+
+        function applyTheme(theme) {
+            const body = document.body;
+            const sunIcon = document.getElementById('sunIcon');
+            const moonIcon = document.getElementById('moonIcon');
+            
+            if (theme === 'dark') {
+                body.setAttribute('data-theme', 'dark');
+                sunIcon.style.display = 'block';
+                moonIcon.style.display = 'none';
+            } else {
+                body.removeAttribute('data-theme');
+                sunIcon.style.display = 'none';
+                moonIcon.style.display = 'block';
+            }
+        }
+
+        function toggleTheme() {
+            currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+            applyTheme(currentTheme);
+        }
+
+        // START WITH EMPTY DATA - All data will come from backend only
+        let facultyData = [];
+
+        // Department order as specified in v14
+        const departmentOrder = ['all', 'biot', 'chem', 'civil', 'cse', 'eee', 'ece', 'mech', 'mme', 'sos', 'shm'];
+        
+        const departments = {
+            'all': 'ALL FACULTIES',
+            'biot': 'BIOT',
+            'chem': 'CHEM',
+            'civil': 'CIVIL',
+            'cse': 'CSE',
+            'eee': 'EEE',
+            'ece': 'ECE',
+            'mech': 'MECH',
+            'mme': 'MME',
+            'sos': 'SOS',
+            'shm': 'SHM'
+        };
+        
+        const departmentFullNames = {
+            'biot': 'Biotechnology',
+            'chem': 'Chemical Engineering',
+            'civil': 'Civil Engineering',
+            'cse': 'Computer Science & Engineering',
+            'eee': 'Electrical Engineering',
+            'ece': 'Electronics & Communication Engineering',
+            'mech': 'Mechanical Engineering',
+            'mme': 'Metallurgical & Materials Engineering',
+            'sos': 'School of Sciences',
+            'shm': 'School of Humanities and Management'
+        };
+
+        let currentFilter = 'all';
+        let searchQuery = '';
+        let lastRefreshTime = null;
+        let dataSource = 'unknown'; // 'cache' or 'live'
+
+        // Toast notification system
+        function showToast(message, type = 'info', duration = 4000) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            let icon = '';
+            if (type === 'success') {
+                icon = '<svg class="toast-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>';
+            } else if (type === 'error') {
+                icon = '<svg class="toast-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>';
+            } else {
+                icon = '<svg class="toast-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>';
+            }
+            
+            toast.innerHTML = `${icon}<span>${message}</span>`;
+            container.appendChild(toast);
+            
+            if (duration > 0) {
+                setTimeout(() => {
+                    toast.style.animation = 'slideInRight 0.3s ease-out reverse';
+                    setTimeout(() => toast.remove(), 300);
+                }, duration);
+            }
+            
+            return toast;
+        }
+
+        // Update backend status indicator
+        function updateBackendStatus(online) {
+            backendOnline = online;
+            const statusContainer = document.getElementById('backendStatus');
+            const statusDot = document.getElementById('statusDot');
+            const statusText = document.getElementById('statusText');
+            
+            statusContainer.style.display = 'inline-flex';
+            if (online) {
+                statusDot.classList.remove('offline');
+                statusText.textContent = 'Backend Online';
+            } else {
+                statusDot.classList.add('offline');
+                statusText.textContent = 'Backend Offline';
+            }
+        }
+
+        // Update last refresh timestamp with source indicator
+        function updateLastRefresh(timestamp, source) {
+            console.log('updateLastRefresh called:', { timestamp, source });
+            const element = document.getElementById('lastRefresh');
+            const headerTimestamp = document.getElementById('headerTimestamp');
+            const headerTimestampText = document.getElementById('headerTimestampText');
+            
+            if (timestamp) {
+                const date = new Date(timestamp);
+                const formatted = date.toLocaleString('en-IN', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric'
+                });
+                
+                console.log('Formatted timestamp:', formatted);
+                
+                let sourceIndicator = '';
+                let sourceClass = '';
+                if (source === 'cache') {
+                    sourceIndicator = '<span class="refresh-source cached">📦 Cached</span>';
+                    sourceClass = 'cached';
+                } else if (source === 'live') {
+                    sourceIndicator = '<span class="refresh-source fresh">✓ Fresh</span>';
+                    sourceClass = 'fresh';
+                }
+                
+                element.innerHTML = `Last refreshed: ${formatted} ${sourceIndicator}`;
+                element.style.display = 'block';
+                
+                // Update header timestamp
+                headerTimestampText.textContent = `Last Refreshed: ${formatted}`;
+                headerTimestamp.style.display = 'flex';
+                
+                console.log('Timestamp display updated in both locations');
+                
+                lastRefreshTime = timestamp;
+                dataSource = source || 'unknown';
+            } else {
+                console.log('No timestamp provided, hiding displays');
+                element.innerHTML = 'Last Refreshed: Unknown';
+                element.style.display = 'block';
+                headerTimestampText.textContent = 'Last Refreshed: Unknown';
+                headerTimestamp.style.display = 'flex';
+            }
+        }
+
+        // Convert name to proper case (Title Case)
+        function toProperCase(name) {
+            if (!name) return name;
+            
+            // List of titles to preserve
+            const titles = ['Dr.', 'Dr', 'Mr.', 'Mr', 'Mrs.', 'Mrs', 'Ms.', 'Ms', 'Prof.', 'Prof'];
+            
+            return name.split(' ').map((word, index) => {
+                if (!word) return word;
+                
+                // Check if this word is a title
+                const isTitle = titles.some(title => word.toLowerCase() === title.toLowerCase());
+                
+                if (isTitle) {
+                    // Preserve title case (first letter upper, rest as-is for the dot)
+                    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+                }
+                
+                // Convert to proper case: First letter uppercase, rest lowercase
+                return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+            }).join(' ');
+        }
+
+        // Map backend data to frontend format
+        function mapBackendData(backendFaculty) {
+            const departmentFullNames = {
+                'biot': 'Biotechnology',
+                'chem': 'Chemical Engineering',
+                'civil': 'Civil Engineering',
+                'cse': 'Computer Science & Engineering',
+                'eee': 'Electrical Engineering',
+                'ece': 'Electronics & Communication Engineering',
+                'mech': 'Mechanical Engineering',
+                'mme': 'Metallurgical & Materials Engineering',
+                'sos': 'School of Sciences',
+                'shm': 'School of Humanities and Management'
+            };
+            
+            const departmentOrder = ['biot', 'chem', 'civil', 'cse', 'eee', 'ece', 'mech', 'mme', 'sos', 'shm'];
+            
+            return backendFaculty.map(faculty => ({
+                department: faculty.department,
+                department_full: departmentFullNames[faculty.department] || faculty.department,
+                departmentShort: faculty.department.toUpperCase(),
+                departmentOrder: departmentOrder.indexOf(faculty.department) + 1,
+                id: faculty.id || 0,
+                image: faculty.image || '',
+                name: toProperCase(faculty.name) || 'Unknown',
+                number: faculty.number || '',
+                title: faculty.title || 'Faculty',
+                email: faculty.email || null,
+                areas_of_interest: faculty.areas_of_interest || null,
+                isHoD: faculty.title && (faculty.title.includes('HOD') || faculty.title.includes('HoD'))
+            }));
+        }
+
+        // Fetch cached faculty data
+        async function fetchCachedData() {
+            try {
+                const response = await fetch(`${BACKEND_API}/api/faculty`);
+                if (!response.ok) throw new Error('Failed to fetch data');
+                
+                const data = await response.json();
+                updateBackendStatus(true);
+                
+                if (data.status === 'success' && data.data && data.data.length > 0) {
+                    facultyData = mapBackendData(data.data);
+                    
+                    // Update timestamp with source indicator
+                    const source = data.source || 'cache';
+                    // Backend returns last_refresh (not last_refreshed)
+                    const timestamp = data.last_refresh || data.last_refreshed;
+                    if (timestamp) {
+                        updateLastRefresh(timestamp, source);
+                    }
+                    
+                    // Show appropriate message based on source
+                    if (source === 'cache') {
+                        showToast('Loaded cached faculty data. Click refresh for latest updates.', 'info', 4000);
+                    } else {
+                        showToast('Loaded fresh faculty data!', 'success', 3000);
+                    }
+                    
+                    return true;
+                } else {
+                    showToast('No data available. Click refresh to load faculty data!', 'info', 6000);
+                    return false;
+                }
+            } catch (error) {
+                console.error('Error fetching cached data:', error);
+                updateBackendStatus(false);
+                showToast('Unable to connect to backend. Please try again later.', 'error', 5000);
+                return false;
+            }
+        }
+
+        // Refresh data from backend (trigger scrape)
+        async function refreshFacultyData() {
+            if (isRefreshing) return;
+            
+            isRefreshing = true;
+            const refreshBtn = document.getElementById('refreshButton');
+            refreshBtn.disabled = true;
+            refreshBtn.classList.add('refreshing');
+            
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            loadingOverlay.style.display = 'flex';
+            
+            const loadingToast = showToast('Fetching fresh data from NIT AP website... This may take up to 1 minute.', 'info', 0);
+            
+            // Show additional hint after 30 seconds
+            const slowNetworkTimeout = setTimeout(() => {
+                showToast('Taking longer than expected... Please wait.', 'info', 5000);
+            }, 30000);
+            
+            try {
+                const response = await fetch(`${BACKEND_API}/api/faculty/refresh`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                clearTimeout(slowNetworkTimeout);
+                
+                if (!response.ok) throw new Error('Refresh failed');
+                
+                const data = await response.json();
+                
+                if (data.status === 'success' && data.data && data.data.length > 0) {
+                    facultyData = mapBackendData(data.data);
+                    updateBackendStatus(true);
+                    
+                    // Update with live source indicator
+                    const source = data.source || 'live';
+                    // Backend returns last_refresh (not last_refreshed)
+                    const timestamp = data.last_refresh || data.last_refreshed;
+                    if (timestamp) {
+                        updateLastRefresh(timestamp, source);
+                    } else {
+                        updateLastRefresh(new Date().toISOString(), source);
+                    }
+                    
+                    // Re-initialize filters and render
+                    const deptTabs = document.getElementById('deptTabs');
+                    deptTabs.innerHTML = '';
+                    initializeFilters();
+                    renderFaculty();
+                    
+                    loadingToast.remove();
+                    showToast(`✓ Data refreshed successfully! Showing ${data.count || facultyData.length} faculty members`, 'success', 5000);
+                } else {
+                    throw new Error('Invalid data received');
+                }
+            } catch (error) {
+                clearTimeout(slowNetworkTimeout);
+                console.error('Error refreshing data:', error);
+                loadingToast.remove();
+                
+                if (facultyData.length > 0) {
+                    showToast('✗ Failed to refresh. Showing cached data.', 'error', 5000);
+                } else {
+                    showToast('✗ Failed to refresh data. Please try again.', 'error', 5000);
+                }
+                updateBackendStatus(false);
+            } finally {
+                isRefreshing = false;
+                refreshBtn.disabled = false;
+                refreshBtn.classList.remove('refreshing');
+                loadingOverlay.style.display = 'none';
+            }
+        }
+
+        function getDepartmentCounts() {
+            const counts = {};
+            facultyData.forEach(faculty => {
+                counts[faculty.department] = (counts[faculty.department] || 0) + 1;
+            });
+            return counts;
+        }
+
+        function initializeFilters() {
+            const deptTabs = document.getElementById('deptTabs');
+            const counts = getDepartmentCounts();
+            
+            // Render tabs in specified order
+            departmentOrder.forEach(key => {
+                const label = departments[key];
+                const tab = document.createElement('button');
+                tab.className = 'dept-tab';
+                tab.dataset.dept = key;
+                
+                if (key === 'all') {
+                    tab.innerHTML = label;
+                } else {
+                    const count = counts[key] || 0;
+                    tab.innerHTML = `${label} <span class="count">${count}</span>`;
+                }
+                
+                tab.addEventListener('click', () => filterByDepartment(key));
+                deptTabs.appendChild(tab);
+            });
+            
+            // Set "ALL FACULTIES" as active by default
+            document.querySelectorAll('[data-dept="all"]').forEach(btn => {
+                btn.classList.add('active');
+            });
+            currentFilter = 'all';
+        }
+
+        function filterByDepartment(dept) {
+            currentFilter = dept;
+            
+            document.querySelectorAll('.dept-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.dept === dept);
+            });
+            
+            renderFaculty();
+        }
+
+        function handleSearch(query) {
+            searchQuery = query.toLowerCase();
+            renderFaculty();
+        }
+
+        function renderFaculty() {
+            const grid = document.getElementById('facultyGrid');
+            const noResults = document.getElementById('noResults');
+            
+            let filteredFaculty = facultyData.filter(faculty => {
+                const matchesDept = currentFilter === 'all' || faculty.department === currentFilter;
+                const matchesSearch = searchQuery === '' || 
+                    faculty.name.toLowerCase().includes(searchQuery) ||
+                    faculty.title.toLowerCase().includes(searchQuery);
+                return matchesDept && matchesSearch;
+            });
+
+            // Sort by department order, then by HoD, then by title priority, then by name
+            const titlePriority = {'Professor': 1, 'Associate Professor': 2, 'Assistant Professor': 3, 'Adhoc Faculty': 4};
+            const deptOrderMap = {};
+            departmentOrder.forEach((dept, index) => {
+                deptOrderMap[dept] = index;
+            });
+            
+            filteredFaculty.sort((a, b) => {
+                // First sort by department order (only when showing all)
+                if (currentFilter === 'all') {
+                    const deptOrderA = deptOrderMap[a.department] || 999;
+                    const deptOrderB = deptOrderMap[b.department] || 999;
+                    if (deptOrderA !== deptOrderB) return deptOrderA - deptOrderB;
+                }
+                
+                // HoDs come first within department
+                if (a.isHoD && !b.isHoD) return -1;
+                if (!a.isHoD && b.isHoD) return 1;
+                
+                // Then sort by title
+                const priorityA = titlePriority[a.title] || 10;
+                const priorityB = titlePriority[b.title] || 10;
+                if (priorityA !== priorityB) return priorityA - priorityB;
+                
+                // Finally sort by name alphabetically
+                return a.name.localeCompare(b.name);
+            });
+
+            grid.innerHTML = '';
+            
+            if (filteredFaculty.length === 0) {
+                grid.style.display = 'none';
+                noResults.style.display = 'block';
+            } else {
+                grid.style.display = 'grid';
+                noResults.style.display = 'none';
+                
+                filteredFaculty.forEach(faculty => {
+                    const card = createFacultyCard(faculty);
+                    grid.appendChild(card);
+                });
+            }
+
+            updateStats(filteredFaculty.length, facultyData.length);
+        }
+
+        function getInitials(name) {
+            const words = name.trim().split(' ');
+            if (words.length === 1) return words[0].substring(0, 2).toUpperCase();
+            return (words[0][0] + words[words.length - 1][0]).toUpperCase();
+        }
+
+        function createFacultyCard(faculty) {
+            const card = document.createElement('div');
+            card.className = 'faculty-card';
+            
+            const isHOD = faculty.isHoD === true;
+            const hasPhone = faculty.number && faculty.number !== '+91 0000000000' && faculty.number !== '';
+            const hasEmail = faculty.email && faculty.email.trim() !== '';
+            const hasAreas = faculty.areas_of_interest && faculty.areas_of_interest.trim() !== '';
+            const initials = getInitials(faculty.name);
+            const displayTitle = faculty.title.replace(/\s*&\s*HOD/gi, '').replace(/\s*&\s*HoD/gi, '').trim();
+            
+            // Create image wrapper with fallback to initials
+            const imageHTML = `
+                <div class="faculty-image-wrapper">
+                    <div class="faculty-initials" id="initials-${faculty.name.replace(/\s+/g, '-')}">${initials}</div>
+                </div>
+            `;
+            
+            // Build details section HTML - NEW LAYOUT
+            let detailsHTML = `<div class="faculty-details">`;
+            
+            // Areas of Interest section (label on its own line, values below)
+            detailsHTML += `<div class="faculty-detail-row areas-section">`;
+            detailsHTML += `<span class="detail-label areas-label">Areas of Interest:</span>`;
+            detailsHTML += `</div>`;
+            detailsHTML += `<div class="faculty-detail-row areas-values">`;
+            detailsHTML += hasAreas ? `<span class="areas-text">${faculty.areas_of_interest}</span>` : `<span class="detail-value not-available">Not specified</span>`;
+            detailsHTML += `</div>`;
+            
+            // Contact section (Email and Phone compact)
+            detailsHTML += `<div class="contact-section">`;
+            detailsHTML += `<div class="faculty-detail-row contact-row">`;
+            detailsHTML += `<span class="detail-label">Email:</span> `;
+            detailsHTML += hasEmail ? `<a href="mailto:${faculty.email}" class="detail-link" title="Send email to ${faculty.name}">${faculty.email}</a>` : `<span class="detail-value not-available">Not provided</span>`;
+            detailsHTML += `</div>`;
+            detailsHTML += `<div class="faculty-detail-row contact-row">`;
+            detailsHTML += `<span class="detail-label">Phone:</span> `;
+            detailsHTML += hasPhone ? `<a href="tel:${faculty.number}" class="detail-link" title="Call ${faculty.name}">${faculty.number}</a>` : `<span class="detail-value not-available">Not provided</span>`;
+            detailsHTML += `</div>`;
+            detailsHTML += `</div>`;
+            
+            detailsHTML += `</div>`;
+            
+            card.innerHTML = `
+                ${imageHTML}
+                <div class="faculty-info">
+                    ${isHOD ? '<div class="hod-badge" title="Head of Department" style="position: static; margin-bottom: 10px;">HoD</div>' : ''}
+                    <h3 class="faculty-name">${faculty.name}</h3>
+                    <div class="faculty-title">${displayTitle}</div>
+                    <span class="faculty-department" data-dept="${faculty.department}">${faculty.department_full}</span>
+                    ${detailsHTML}
+                </div>
+            `;
+            
+            // Try to load the actual image, keep initials if it fails
+            const img = new Image();
+            img.onload = function() {
+                const initialsDiv = card.querySelector('.faculty-initials');
+                if (initialsDiv) {
+                    initialsDiv.outerHTML = `<img src="${faculty.image}" alt="${faculty.name}" class="faculty-image" loading="lazy">`;
+                    // Move HoD badge if present
+                    if (isHOD) {
+                        const wrapper = card.querySelector('.faculty-image-wrapper');
+                        if (wrapper && !wrapper.querySelector('.hod-badge')) {
+                            const badge = document.createElement('div');
+                            badge.className = 'hod-badge';
+                            badge.title = 'Head of Department';
+                            badge.textContent = 'HoD';
+                            wrapper.appendChild(badge);
+                        }
+                    }
+                }
+            };
+            img.onerror = function() {
+                // Keep initials placeholder if image fails to load
+            };
+            img.src = faculty.image;
+            
+            return card;
+        }
+
+        function updateStats(visible, total) {
+            document.getElementById('visibleCount').textContent = visible;
+            document.getElementById('totalCount').textContent = total;
+        }
+
+
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', async () => {
+            initTheme();
+            
+            // Show loading state
+            const initialToast = showToast('Loading faculty data...', 'info', 0);
+            
+            // Try to fetch cached data first
+            const hasCachedData = await fetchCachedData();
+            
+            // Remove initial loading toast
+            initialToast.remove();
+            
+            // Initialize UI
+            initializeFilters();
+            renderFaculty();
+            
+            // Set up event listeners
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', (e) => handleSearch(e.target.value));
+            
+            const themeToggle = document.getElementById('themeToggle');
+            themeToggle.addEventListener('click', toggleTheme);
+            
+            const refreshButton = document.getElementById('refreshButton');
+            refreshButton.addEventListener('click', refreshFacultyData);
+        });
+    </script>
+</body>
+</html>
