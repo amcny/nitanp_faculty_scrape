@@ -6,8 +6,9 @@ from urllib.parse import urljoin
 import re
 import os
 import logging
+from threading import Thread
+import time
 
-# Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -19,9 +20,14 @@ DEPARTMENTS = {
 session = requests.Session()
 session.headers.update({"User-Agent": "Mozilla/5.0"})
 
-def fetch(url):
+# Cache faculty data
+cached_data = None
+cache_timestamp = None
+CACHE_DURATION = 3600  # 1 hour
+
+def fetch(url, timeout=(3, 6)):
     try:
-        r = session.get(url, timeout=(4, 8), allow_redirects=True)
+        r = session.get(url, timeout=timeout, allow_redirects=True)
         r.raise_for_status()
         return r.text
     except requests.RequestException as e:
@@ -29,9 +35,15 @@ def fetch(url):
         return None
 
 def scrape_all():
+    global cached_data, cache_timestamp
+    
+    # Return cached data if available
+    if cached_data and cache_timestamp:
+        if time.time() - cache_timestamp < CACHE_DURATION:
+            logger.info(f"Returning cached data (age: {int(time.time() - cache_timestamp)}s)")
+            return cached_data
+    
     out = []
-    uid = 0
-
     phone_pattern = re.compile(r"\+\d{1,3}\s*\d{10}|\b\d{10}\b")
     email_pattern = re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}")
     url_cleaner = re.compile(r"https?://\S+")
@@ -43,7 +55,6 @@ def scrape_all():
 
     for dept, id_ in DEPARTMENTS.items():
         fac_url = f"https://nitandhra.ac.in/dept/{dept}/faculty"
-        
         logger.info(f"Scraping department: {dept}")
         
         try:
@@ -86,22 +97,19 @@ def scrape_all():
                 if link and link.get("href"):
                     full = urljoin(fac_url, link["href"])
                     try:
-                        sub_html = fetch(full)
+                        sub_html = fetch(full, timeout=(2, 4))
                         if sub_html:
                             sub = BeautifulSoup(sub_html, "html.parser")
                             text = sub.get_text(" ", strip=True)
 
-                            # Extract phone
                             phone_match = phone_pattern.findall(text)
                             if phone_match:
                                 entry["number"] = phone_match[0].strip()
 
-                            # Extract email
                             email_match = email_pattern.findall(text)
                             if email_match:
                                 entry["email"] = email_match[0].strip()
 
-                            # Extract areas of interest
                             aoi_block = sub.find("b", string=lambda x: x and "AREAS OF INTEREST" in x.upper())
                             if aoi_block:
                                 aoi_text = aoi_block.parent.get_text(" ", strip=True)
@@ -116,27 +124,28 @@ def scrape_all():
                                 entry["areas_of_interest"] = aoi_text if aoi_text else None
 
                     except Exception as e:
-                        logger.error(f"Error processing faculty detail page: {e}")
-                        pass
+                        logger.error(f"Error processing faculty detail: {e}")
 
                 out.append(entry)
-                uid += 1
 
         except Exception as e:
             logger.error(f"Error parsing department {dept}: {e}")
             continue
 
     out.sort(key=lambda x: (x["id"], x["name"].lower()))
+    
+    # Cache the data
+    cached_data = out
+    cache_timestamp = time.time()
+    
     logger.info(f"Scraped {len(out)} faculty members")
     return out
 
-# Initialize Flask app
 app = Flask(__name__)
 CORS(app)
 
 @app.get("/")
 def root():
-    """Root endpoint - returns scraped faculty data"""
     try:
         data = scrape_all()
         return jsonify({
@@ -145,7 +154,7 @@ def root():
             "count": len(data)
         })
     except Exception as e:
-        logger.error(f"Error in root endpoint: {e}")
+        logger.error(f"Error: {e}")
         return jsonify({
             "status": "error",
             "message": str(e)
@@ -153,7 +162,6 @@ def root():
 
 @app.get("/api/faculty")
 def faculty():
-    """API endpoint - returns scraped faculty data"""
     try:
         data = scrape_all()
         return jsonify({
@@ -162,7 +170,7 @@ def faculty():
             "count": len(data)
         })
     except Exception as e:
-        logger.error(f"Error in faculty endpoint: {e}")
+        logger.error(f"Error: {e}")
         return jsonify({
             "status": "error",
             "message": str(e)
@@ -170,26 +178,7 @@ def faculty():
 
 @app.get("/api/health")
 def health():
-    """Health check endpoint"""
-    return jsonify({
-        "status": "healthy",
-        "message": "Server is running"
-    })
-
-@app.errorhandler(404)
-def not_found(e):
-    return jsonify({
-        "status": "error",
-        "message": "Endpoint not found"
-    }), 404
-
-@app.errorhandler(500)
-def server_error(e):
-    logger.error(f"Server error: {e}")
-    return jsonify({
-        "status": "error",
-        "message": "Internal server error"
-    }), 500
+    return jsonify({"status": "healthy"})
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))
