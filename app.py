@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, send_file
+from flask import Flask, jsonify
 from flask_cors import CORS
 import requests
 from bs4 import BeautifulSoup
@@ -18,6 +18,10 @@ session = requests.Session()
 session.headers.update({"User-Agent": "Mozilla/5.0"})
 
 CACHE_FILE = "/tmp/faculty_cache.json"
+
+def get_current_timestamp():
+    """Get current timestamp in format: YYYY-MM-DD HH:MM:SS"""
+    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 def fetch(url, timeout=(3, 5)):
     try:
@@ -116,10 +120,14 @@ def scrape_all():
     return all_faculty
 
 def save_cache(data):
-    """Save scraped data to cache file"""
+    """Save scraped data to cache file with timestamp"""
     try:
+        cache_data = {
+            "faculty": data,
+            "timestamp": get_current_timestamp()
+        }
         with open(CACHE_FILE, 'w') as f:
-            json.dump(data, f)
+            json.dump(cache_data, f)
         print(f"Cache saved: {CACHE_FILE}")
     except Exception as e:
         print(f"Error saving cache: {e}")
@@ -129,10 +137,11 @@ def load_cache():
     try:
         if os.path.exists(CACHE_FILE):
             with open(CACHE_FILE, 'r') as f:
-                return json.load(f)
+                cache_data = json.load(f)
+                return cache_data.get("faculty", []), cache_data.get("timestamp", "")
     except Exception as e:
         print(f"Error loading cache: {e}")
-    return []
+    return [], ""
 
 app = Flask(__name__)
 CORS(app)
@@ -145,19 +154,22 @@ def root():
 def get_faculty():
     """Get faculty from cache"""
     try:
-        cached_data = load_cache()
-        if cached_data:
+        faculty_data, cached_timestamp = load_cache()
+        if faculty_data:
             return jsonify({
                 "status": "success",
-                "data": cached_data,
-                "count": len(cached_data),
-                "source": "cache"
+                "data": faculty_data,
+                "count": len(faculty_data),
+                "source": "cache",
+                "last_refreshed": cached_timestamp if cached_timestamp else get_current_timestamp()
             })
         else:
             return jsonify({
                 "status": "no_data",
                 "data": [],
-                "message": "No cached data. Click refresh first!"
+                "message": "No cached data. Click refresh first!",
+                "source": "cache",
+                "last_refreshed": ""
             })
     except Exception as e:
         return jsonify({
@@ -173,12 +185,15 @@ def refresh_faculty():
         data = scrape_all()
         save_cache(data)
         
+        current_time = get_current_timestamp()
+        
         return jsonify({
             "status": "success",
             "data": data,
             "count": len(data),
             "message": f"Refreshed! Got {len(data)} faculty",
-            "source": "live"
+            "source": "live",
+            "last_refreshed": current_time
         })
     except Exception as e:
         return jsonify({
