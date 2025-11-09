@@ -121,6 +121,19 @@ def scrape_all():
 app = Flask(__name__)
 CORS(app)
 
+# ROOT ENDPOINT
+@app.get("/")
+def root():
+    return jsonify({
+        "status": "online",
+        "message": "NIT AP Faculty Scraper API",
+        "endpoints": {
+            "get_faculty": "/api/faculty",
+            "refresh": "POST /api/faculty/refresh",
+            "health": "/api/health"
+        }
+    }), 200
+
 # Endpoint 1: Get cached data (FAST - no scraping)
 @app.get("/api/faculty")
 def get_faculty():
