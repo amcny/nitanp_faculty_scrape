@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes, maximum-scale=5.0">
     <title>Faculty Directory | NIT Andhra Pradesh</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -66,6 +66,12 @@
             padding: 0;
             transition: background-color 0.3s ease, color 0.3s ease;
             min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
         }
 
         .logo-section {
@@ -78,6 +84,8 @@
         .logo-section img {
             height: 85px;
             width: auto;
+            max-width: 100%;
+            object-fit: contain;
             transition: transform 0.2s ease;
         }
         
@@ -373,50 +381,59 @@
         .dept-tabs {
             background: var(--bg-surface);
             border-bottom: 1px solid var(--border);
-            padding: 0 24px;
-            overflow-x: auto;
-            white-space: nowrap;
-            -webkit-overflow-scrolling: touch;
+            padding: 16px 24px;
             box-shadow: var(--shadow-sm);
+            overflow: visible;
         }
 
         .dept-tabs-inner {
             max-width: 1400px;
             margin: 0 auto;
             display: flex;
-            gap: 8px;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
         }
 
         .dept-tab {
-            padding: 16px 22px;
+            padding: 10px 16px;
             border: none;
-            background: transparent;
-            color: var(--text-secondary);
+            background: #F3F4F6;
+            color: #374151;
             font-size: 14px;
-            font-weight: 600;
+            font-weight: 500;
             cursor: pointer;
-            border-bottom: 3px solid transparent;
-            transition: all 0.2s ease;
+            border-radius: 8px;
+            transition: all 0.2s ease-in-out;
             font-family: var(--font-family);
             white-space: nowrap;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            flex-shrink: 0;
         }
 
         .dept-tab:hover {
-            color: var(--text-primary);
-            background: rgba(0, 82, 204, 0.05);
+            background: #E5E7EB;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
         }
 
         .dept-tab.active {
-            color: var(--accent);
-            border-bottom-color: var(--accent);
-            background: rgba(0, 82, 204, 0.08);
+            background: #2563EB;
+            color: #FFFFFF;
+            font-weight: 600;
+            box-shadow: 0 3px 8px rgba(37, 99, 235, 0.3);
+        }
+
+        .dept-tab.active:hover {
+            background: #1D4ED8;
+            transform: translateY(-1px);
         }
 
         .dept-tab .count {
             display: inline-block;
             margin-left: 8px;
-            padding: 3px 8px;
-            background: rgba(0, 82, 204, 0.1);
+            padding: 2px 7px;
+            background: rgba(0, 0, 0, 0.1);
             border-radius: 10px;
             font-size: 11px;
             font-weight: 600;
@@ -424,7 +441,7 @@
         }
 
         .dept-tab.active .count {
-            background: var(--accent);
+            background: rgba(255, 255, 255, 0.25);
             color: #FFFFFF;
         }
 
@@ -547,6 +564,12 @@
             display: block;
             transition: transform 0.3s ease;
             border-radius: 8px;
+        }
+        
+        /* Ensure images never overflow */
+        img {
+            max-width: 100%;
+            height: auto;
         }
 
         .hod-badge {
@@ -889,76 +912,422 @@
             color: #FFFFFF;
         }
         
-        /* RESPONSIVE DESIGN */
-        @media (max-width: 1200px) {
+        /* COMPREHENSIVE MOBILE RESPONSIVENESS */
+        
+        /* Desktop Large (1440px+) */
+        @media (min-width: 1440px) {
             .faculty-grid {
-                grid-template-columns: repeat(3, 1fr);
+                grid-template-columns: repeat(4, 1fr);
                 gap: 28px;
             }
         }
-
-        @media (max-width: 900px) {
+        
+        /* Desktop (1024px - 1439px) */
+        @media (min-width: 1024px) and (max-width: 1439px) {
             .faculty-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(4, 1fr);
                 gap: 24px;
             }
             
-            .nav-content {
-                flex-direction: column;
-                gap: 16px;
+            .logo-section {
+                padding: 28px 24px;
             }
             
-            .nav-search {
-                width: 100%;
+            .logo-section img {
+                height: 85px;
+            }
+        }
+        
+        /* Tablet (768px - 1023px) */
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .faculty-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+            
+            .logo-section {
+                padding: 24px 20px;
             }
             
             .logo-section img {
                 height: 70px;
             }
-        }
-
-        @media (max-width: 600px) {
-            .faculty-grid {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
             
-            .faculty-image-wrapper {
-                height: 240px;
-            }
-
             .nav-bar {
-                padding: 12px 16px;
+                padding: 16px 20px;
             }
             
-            .nav-content {
-                flex-direction: column;
-                gap: 12px;
+            .nav-search {
+                max-width: 80%;
             }
-
+            
+            .search-bar {
+                padding: 11px 18px;
+                font-size: 14px;
+            }
+            
             .container {
-                padding: 32px 16px;
-            }
-
-            .faculty-card {
-                border-radius: 14px;
+                padding: 32px 20px;
             }
             
             .dept-tabs {
-                padding: 0 16px;
+                padding: 14px 20px;
+            }
+            
+            .dept-tabs-inner {
+                gap: 10px;
+                justify-content: flex-start;
             }
             
             .dept-tab {
-                padding: 14px 16px;
+                padding: 9px 14px;
                 font-size: 13px;
             }
             
+            .faculty-image-wrapper {
+                height: 260px;
+            }
+            
+            .theme-toggle {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .theme-toggle svg {
+                width: 20px;
+                height: 20px;
+            }
+        }
+        
+        /* Mobile (max-width: 767px) */
+        @media (max-width: 767px) {
+            /* Header optimization */
             .logo-section {
-                padding: 20px 16px;
+                padding: 16px 12px;
             }
             
             .logo-section img {
-                height: 60px;
+                height: 50px;
+                max-width: 100%;
+                width: auto;
+            }
+            
+            /* Timestamp mobile optimization */
+            .timestamp-display {
+                font-size: 12px;
+                padding: 8px 12px;
+                margin-top: 12px;
+                flex-wrap: wrap;
+            }
+            
+            .timestamp-icon {
+                width: 14px;
+                height: 14px;
+            }
+            
+            /* Navigation mobile stack */
+            .nav-bar {
+                padding: 10px 12px;
+                position: sticky;
+                top: 0;
+            }
+            
+            .nav-content {
+                flex-direction: row;
+                gap: 8px;
+                align-items: center;
+            }
+            
+            .nav-search {
+                flex: 1;
+                max-width: 100%;
+            }
+            
+            /* Search bar touch-friendly */
+            .search-bar {
+                padding: 12px 14px;
+                font-size: 14px;
+                min-height: 44px;
+                width: 100%;
+            }
+            
+            /* Refresh button mobile - icon only */
+            .theme-toggle {
+                width: 44px;
+                height: 44px;
+                min-width: 44px;
+                flex-shrink: 0;
+            }
+            
+            .theme-toggle svg {
+                width: 20px;
+                height: 20px;
+            }
+            
+            /* Department tabs wrap naturally on mobile */
+            .dept-tabs {
+                padding: 12px;
+                overflow: visible;
+            }
+            
+            .dept-tabs-inner {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+                justify-content: flex-start;
+            }
+            
+            .dept-tab {
+                padding: 8px 12px;
+                font-size: 12px;
+                white-space: nowrap;
+                min-height: 36px;
+                flex: 0 0 auto;
+                max-width: calc(50% - 4px);
+            }
+            
+            .dept-tab .count {
+                margin-left: 5px;
+                padding: 2px 5px;
+                font-size: 10px;
+            }
+            
+            /* Container mobile spacing */
+            .container {
+                padding: 24px 12px;
+            }
+            
+            /* Stats mobile */
+            .stats {
+                margin-bottom: 24px;
+            }
+            
+            .stats-text {
+                font-size: 13px;
+            }
+            
+            .last-refresh {
+                font-size: 12px;
+                flex-wrap: wrap;
+            }
+            
+            .backend-status {
+                display: block !important;
+                margin-left: 0;
+                margin-top: 4px;
+            }
+            
+            /* Faculty grid - single column */
+            .faculty-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            
+            /* Faculty cards mobile */
+            .faculty-card {
+                border-radius: 12px;
+                margin: 0;
+            }
+            
+            .faculty-image-wrapper {
+                height: 200px;
+                padding: 12px;
+            }
+            
+            .faculty-initials {
+                width: 100px;
+                height: 100px;
+                font-size: 40px;
+            }
+            
+            .faculty-info {
+                padding: 16px;
+            }
+            
+            .faculty-name {
+                font-size: 16px;
+                margin-bottom: 6px;
+            }
+            
+            .faculty-title {
+                font-size: 13px;
+                margin-bottom: 10px;
+            }
+            
+            .faculty-department {
+                font-size: 11px;
+                padding: 5px 12px;
+            }
+            
+            .faculty-details {
+                margin-top: 12px;
+                padding-top: 12px;
+            }
+            
+            .faculty-detail-row {
+                font-size: 12px;
+                margin-bottom: 5px;
+            }
+            
+            .detail-label {
+                font-size: 12px;
+            }
+            
+            .detail-link,
+            .detail-value,
+            .areas-text {
+                font-size: 12px;
+            }
+            
+            /* No results mobile */
+            .no-results {
+                padding: 48px 16px;
+            }
+            
+            .no-results-icon svg {
+                width: 64px;
+                height: 64px;
+            }
+            
+            .no-results h3 {
+                font-size: 20px;
+            }
+            
+            .no-results p {
+                font-size: 14px;
+            }
+            
+            /* Footer mobile */
+            .footer {
+                padding: 24px 16px;
+                margin-top: 40px;
+            }
+            
+            .footer-content {
+                font-size: 12px;
+            }
+            
+            .footer-title {
+                font-size: 14px;
+            }
+            
+            /* Toast mobile */
+            .toast-container {
+                top: 60px;
+                right: 12px;
+                left: 12px;
+                max-width: 100%;
+            }
+            
+            .toast {
+                padding: 12px 16px;
+                font-size: 13px;
+            }
+            
+            /* Loading overlay mobile */
+            .loading-content {
+                padding: 24px 32px;
+                margin: 0 12px;
+            }
+            
+            .loading-text {
+                font-size: 15px;
+            }
+            
+            .loading-subtext {
+                font-size: 12px;
+            }
+        }
+        
+        /* Extra small mobile (iPhone SE - 375px) */
+        @media (max-width: 400px) {
+            .logo-section img {
+                height: 45px;
+            }
+            
+            .timestamp-display {
+                font-size: 11px;
+                padding: 6px 10px;
+            }
+            
+            #headerTimestampText {
+                font-size: 11px;
+            }
+            
+            .nav-bar {
+                padding: 8px 10px;
+            }
+            
+            .search-bar {
+                padding: 10px 12px;
+                font-size: 13px;
+            }
+            
+            .theme-toggle {
+                width: 42px;
+                height: 42px;
+            }
+            
+            .dept-tabs {
+                padding: 10px;
+            }
+            
+            .dept-tabs-inner {
+                gap: 6px;
+            }
+            
+            .dept-tab {
+                padding: 7px 10px;
+                font-size: 11px;
+                min-height: 34px;
+                max-width: calc(50% - 3px);
+            }
+            
+            .container {
+                padding: 20px 10px;
+            }
+            
+            .faculty-grid {
+                gap: 14px;
+            }
+            
+            .faculty-image-wrapper {
+                height: 180px;
+            }
+            
+            .faculty-name {
+                font-size: 15px;
+            }
+            
+            .faculty-title {
+                font-size: 12px;
+            }
+        }
+        
+        /* Touch optimization - applies to all touch devices */
+        @media (hover: none) and (pointer: coarse) {
+            /* Remove hover effects on touch devices */
+            .faculty-card:hover {
+                transform: none;
+            }
+            
+            .dept-tab:hover {
+                background: #F3F4F6;
+                transform: none;
+            }
+            
+            .dept-tab.active:hover {
+                background: #2563EB;
+                transform: none;
+            }
+            
+            /* Ensure all interactive elements are touch-friendly */
+            button,
+            a,
+            .dept-tab,
+            .theme-toggle {
+                min-height: 44px;
+                min-width: 44px;
             }
         }
     </style>
@@ -1132,6 +1501,8 @@
             
             if (timestamp) {
                 const date = new Date(timestamp);
+                
+                // Full format for desktop
                 const formatted = date.toLocaleString('en-IN', {
                     hour: '2-digit',
                     minute: '2-digit',
@@ -1139,6 +1510,13 @@
                     day: '2-digit',
                     month: 'short',
                     year: 'numeric'
+                });
+                
+                // Abbreviated format for mobile
+                const timeOnly = date.toLocaleTimeString('en-IN', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
                 });
                 
                 console.log('Formatted timestamp:', formatted);
@@ -1156,8 +1534,13 @@
                 element.innerHTML = `Last refreshed: ${formatted} ${sourceIndicator}`;
                 element.style.display = 'block';
                 
-                // Update header timestamp
-                headerTimestampText.textContent = `Last Refreshed: ${formatted}`;
+                // Update header timestamp - mobile friendly
+                const isMobile = window.innerWidth < 768;
+                if (isMobile) {
+                    headerTimestampText.textContent = `Refreshed: ${timeOnly}`;
+                } else {
+                    headerTimestampText.textContent = `Last Refreshed: ${formatted}`;
+                }
                 headerTimestamp.style.display = 'flex';
                 
                 console.log('Timestamp display updated in both locations');
@@ -1571,6 +1954,17 @@
             
             const refreshButton = document.getElementById('refreshButton');
             refreshButton.addEventListener('click', refreshFacultyData);
+            
+            // Handle window resize to update timestamp format
+            let resizeTimer;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => {
+                    if (lastRefreshTime) {
+                        updateLastRefresh(lastRefreshTime, dataSource);
+                    }
+                }, 250);
+            });
         });
     </script>
 </body>
