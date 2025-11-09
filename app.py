@@ -1,11 +1,13 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, send_file
 from flask_cors import CORS
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 import re
 import os
+import json
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from datetime import datetime
 
 DEPARTMENTS = {
     "ece": 0, "cse": 1, "eee": 2, "biot": 3, "chem": 4,
@@ -14,6 +16,8 @@ DEPARTMENTS = {
 
 session = requests.Session()
 session.headers.update({"User-Agent": "Mozilla/5.0"})
+
+CACHE_FILE = "/tmp/faculty_cache.json"
 
 def fetch(url, timeout=(3, 5)):
     try:
@@ -95,7 +99,6 @@ def scrape_all():
     """Scrape all departments in parallel"""
     all_faculty = []
     
-    # Parallel scraping
     with ThreadPoolExecutor(max_workers=5) as executor:
         futures = {
             executor.submit(scrape_department, dept, id_): dept 
@@ -112,6 +115,25 @@ def scrape_all():
     all_faculty.sort(key=lambda x: (x["id"], x["name"].lower()))
     return all_faculty
 
+def save_cache(data):
+    """Save scraped data to cache file"""
+    try:
+        with open(CACHE_FILE, 'w') as f:
+            json.dump(data, f)
+        print(f"Cache saved: {CACHE_FILE}")
+    except Exception as e:
+        print(f"Error saving cache: {e}")
+
+def load_cache():
+    """Load data from cache file"""
+    try:
+        if os.path.exists(CACHE_FILE):
+            with open(CACHE_FILE, 'r') as f:
+                return json.load(f)
+    except Exception as e:
+        print(f"Error loading cache: {e}")
+    return []
+
 app = Flask(__name__)
 CORS(app)
 
@@ -121,18 +143,52 @@ def root():
 
 @app.get("/api/faculty")
 def get_faculty():
+    """Get faculty from cache"""
     try:
+        cached_data = load_cache()
+        if cached_data:
+            return jsonify({
+                "status": "success",
+                "data": cached_data,
+                "count": len(cached_data),
+                "source": "cache"
+            })
+        else:
+            return jsonify({
+                "status": "no_data",
+                "data": [],
+                "message": "No cached data. Click refresh first!"
+            })
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": str(e)
+        }), 500
+
+@app.post("/api/faculty/refresh")
+def refresh_faculty():
+    """Refresh faculty data and save to cache"""
+    try:
+        print("Starting refresh...")
         data = scrape_all()
+        save_cache(data)
+        
         return jsonify({
             "status": "success",
             "data": data,
-            "count": len(data)
+            "count": len(data),
+            "message": f"Refreshed! Got {len(data)} faculty",
+            "source": "live"
         })
     except Exception as e:
         return jsonify({
             "status": "error",
             "message": str(e)
         }), 500
+
+@app.get("/api/health")
+def health():
+    return jsonify({"status": "healthy"})
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))
