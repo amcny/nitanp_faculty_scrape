@@ -1,18 +1,10 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
-import threading
-import time
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 import re
-
-app = Flask(__name__)
-CORS(app)
-
-cached_data = []
-last_refresh = None
-refresh_requested = False
+import os
 
 DEPARTMENTS = {
     "ece": 0, "cse": 1, "eee": 2, "biot": 3, "chem": 4,
@@ -22,20 +14,16 @@ DEPARTMENTS = {
 session = requests.Session()
 session.headers.update({"User-Agent": "Mozilla/5.0"})
 
-
-# ------------------ SCRAPER ------------------
-def fetch(url, timeout=(3, 5)):
+def fetch(url):
     try:
-        r = session.get(url, timeout=timeout, allow_redirects=False)
+        r = session.get(url, timeout=(4, 8), allow_redirects=True)
         r.raise_for_status()
         return r.text
     except:
         return None
 
-
 def scrape_all():
     out = []
-
     phone_pattern = re.compile(r"\+\d{1,3}\s*\d{10}|\b\d{10}\b")
     email_pattern = re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}")
     url_cleaner = re.compile(r"https?://\S+")
@@ -47,9 +35,11 @@ def scrape_all():
 
     for dept, id_ in DEPARTMENTS.items():
         fac_url = f"https://nitandhra.ac.in/dept/{dept}/faculty"
-        html = fetch(fac_url)
-
-        if not html:
+        try:
+            html = fetch(fac_url)
+            if not html:
+                continue
+        except:
             continue
 
         soup = BeautifulSoup(html, "html.parser")
@@ -59,7 +49,6 @@ def scrape_all():
             img = card.find("img")
             name_tag = card.find("h5", class_="media-heading")
             all_h5 = card.find_all("h5")
-
             if not img or not name_tag or not all_h5:
                 continue
 
@@ -81,82 +70,64 @@ def scrape_all():
             link = card.find("a")
             if link and link.get("href"):
                 full = urljoin(fac_url, link["href"])
-                sub_html = fetch(full, timeout=(2, 4))
+                try:
+                    sub_html = fetch(full)
+                    if sub_html:
+                        sub = BeautifulSoup(sub_html, "html.parser")
+                        text = sub.get_text(" ", strip=True)
 
-                if sub_html:
-                    sub = BeautifulSoup(sub_html, "html.parser")
-                    text = sub.get_text(" ", strip=True)
+                        phone_match = phone_pattern.findall(text)
+                        if phone_match:
+                            entry["number"] = phone_match[0].strip()
 
-                    # phone
-                    phone_match = phone_pattern.findall(text)
-                    if phone_match:
-                        entry["number"] = phone_match[0].strip()
+                        email_match = email_pattern.findall(text)
+                        if email_match:
+                            entry["email"] = email_match[0].strip()
 
-                    # email
-                    email_match = email_pattern.findall(text)
-                    if email_match:
-                        entry["email"] = email_match[0].strip()
+                        aoi_block = sub.find("b", string=lambda x: x and "AREAS OF INTEREST" in x.upper())
+                        if aoi_block:
+                            aoi_text = aoi_block.parent.get_text(" ", strip=True)
+                            aoi_text = aoi_text.replace(aoi_block.get_text(strip=True), "")
+                            aoi_text = aoi_text.strip(" :")
+                            aoi_text = url_cleaner.sub("", aoi_text).strip()
+                            
+                            for pattern in remove_labels:
+                                aoi_text = re.sub(pattern, "", aoi_text, flags=re.IGNORECASE)
 
-                    # AOI
-                    aoi_block = sub.find("b", string=lambda x: x and "AREAS OF INTEREST" in x.upper())
-                    if aoi_block:
-                        aoi_text = aoi_block.parent.get_text(" ", strip=True)
-                        aoi_text = aoi_text.replace(aoi_block.get_text(strip=True), "")
-                        aoi_text = aoi_text.strip(" :")
-                        aoi_text = url_cleaner.sub("", aoi_text).strip()
-
-                        for pattern in remove_labels:
-                            aoi_text = re.sub(pattern, "", aoi_text, flags=re.IGNORECASE)
-
-                        entry["areas_of_interest"] = aoi_text.strip() if aoi_text else None
+                            aoi_text = aoi_text.strip()
+                            entry["areas_of_interest"] = aoi_text if aoi_text else None
+                except:
+                    pass
 
             out.append(entry)
 
     out.sort(key=lambda x: (x["id"], x["name"].lower()))
     return out
 
+app = Flask(__name__)
+CORS(app)
 
-# ---------------- BACKGROUND THREAD ----------------
-def refresher():
-    global cached_data, last_refresh, refresh_requested
-    while True:
-        if refresh_requested or not cached_data:
-            try:
-                data = scrape_all()
-                cached_data = data
-                last_refresh = time.strftime("%Y-%m-%d %H:%M:%S")
-            except:
-                pass
-            refresh_requested = False
-
-        time.sleep(30)
-
-
-t = threading.Thread(target=refresher, daemon=True)
-t.start()
-
-
-# ---------------- API ENDPOINTS ----------------
+# GET endpoint - returns scraped data
 @app.get("/api/faculty")
-def get_data():
-    return jsonify({
-        "data": cached_data,
-        "count": len(cached_data),
-        "last_refresh": last_refresh
-    })
+def get_faculty():
+    try:
+        data = scrape_all()
+        return jsonify({
+            "status": "success",
+            "data": data,
+            "count": len(data)
+        })
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": str(e)
+        }), 500
 
-
-@app.post("/api/faculty/refresh")
-def manual():
-    global refresh_requested
-    refresh_requested = True
-    return jsonify({"status": "queued"})
-
-
-@app.get("/api/health")
-def health():
-    return jsonify({"ok": True})
-
+# Health check
+@app.get("/")
+def root():
+    return jsonify({"status": "online", "message": "Faculty Scraper API"})
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8000)
+    port = int(os.environ.get("PORT", 8000))
+    app.run(host="0.0.0.0", port=port, debug=False)
