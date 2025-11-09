@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 import requests
 from bs4 import BeautifulSoup
@@ -6,7 +6,6 @@ from urllib.parse import urljoin
 import re
 import os
 import logging
-from threading import Thread
 import time
 
 logging.basicConfig(level=logging.INFO)
@@ -20,29 +19,20 @@ DEPARTMENTS = {
 session = requests.Session()
 session.headers.update({"User-Agent": "Mozilla/5.0"})
 
-# Cache faculty data
+# Global cache
 cached_data = None
 cache_timestamp = None
-CACHE_DURATION = 3600  # 1 hour
+last_refresh = None
 
-def fetch(url, timeout=(3, 6)):
+def fetch(url, timeout=(2, 3)):
     try:
-        r = session.get(url, timeout=timeout, allow_redirects=True)
+        r = session.get(url, timeout=timeout, allow_redirects=False)
         r.raise_for_status()
         return r.text
-    except requests.RequestException as e:
-        logger.error(f"Fetch error for {url}: {e}")
+    except:
         return None
 
 def scrape_all():
-    global cached_data, cache_timestamp
-    
-    # Return cached data if available
-    if cached_data and cache_timestamp:
-        if time.time() - cache_timestamp < CACHE_DURATION:
-            logger.info(f"Returning cached data (age: {int(time.time() - cache_timestamp)}s)")
-            return cached_data
-    
     out = []
     phone_pattern = re.compile(r"\+\d{1,3}\s*\d{10}|\b\d{10}\b")
     email_pattern = re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}")
@@ -55,15 +45,10 @@ def scrape_all():
 
     for dept, id_ in DEPARTMENTS.items():
         fac_url = f"https://nitandhra.ac.in/dept/{dept}/faculty"
-        logger.info(f"Scraping department: {dept}")
+        logger.info(f"Scraping: {dept}")
         
-        try:
-            html = fetch(fac_url)
-            if not html:
-                logger.warning(f"Failed to fetch {fac_url}")
-                continue
-        except Exception as e:
-            logger.error(f"Error fetching {fac_url}: {e}")
+        html = fetch(fac_url)
+        if not html:
             continue
 
         try:
@@ -97,7 +82,7 @@ def scrape_all():
                 if link and link.get("href"):
                     full = urljoin(fac_url, link["href"])
                     try:
-                        sub_html = fetch(full, timeout=(2, 4))
+                        sub_html = fetch(full, timeout=(1, 2))
                         if sub_html:
                             sub = BeautifulSoup(sub_html, "html.parser")
                             text = sub.get_text(" ", strip=True)
@@ -122,63 +107,74 @@ def scrape_all():
 
                                 aoi_text = aoi_text.strip()
                                 entry["areas_of_interest"] = aoi_text if aoi_text else None
-
-                    except Exception as e:
-                        logger.error(f"Error processing faculty detail: {e}")
+                    except:
+                        pass
 
                 out.append(entry)
 
         except Exception as e:
-            logger.error(f"Error parsing department {dept}: {e}")
-            continue
+            logger.error(f"Error in {dept}: {e}")
 
     out.sort(key=lambda x: (x["id"], x["name"].lower()))
-    
-    # Cache the data
-    cached_data = out
-    cache_timestamp = time.time()
-    
-    logger.info(f"Scraped {len(out)} faculty members")
     return out
 
 app = Flask(__name__)
 CORS(app)
 
-@app.get("/")
-def root():
-    try:
-        data = scrape_all()
-        return jsonify({
-            "status": "success",
-            "data": data,
-            "count": len(data)
-        })
-    except Exception as e:
-        logger.error(f"Error: {e}")
-        return jsonify({
-            "status": "error",
-            "message": str(e)
-        }), 500
-
+# Endpoint 1: Get cached data (FAST - no scraping)
 @app.get("/api/faculty")
-def faculty():
+def get_faculty():
+    global cached_data, cache_timestamp
+    
+    if not cached_data:
+        return jsonify({
+            "status": "no_data",
+            "message": "No data cached. Click refresh first!",
+            "data": []
+        }), 200
+    
+    age = int(time.time() - cache_timestamp)
+    return jsonify({
+        "status": "success",
+        "data": cached_data,
+        "count": len(cached_data),
+        "cached_age_seconds": age,
+        "last_refresh": last_refresh
+    }), 200
+
+# Endpoint 2: Manually refresh (TRIGGERS SCRAPING)
+@app.post("/api/faculty/refresh")
+def refresh_faculty():
+    global cached_data, cache_timestamp, last_refresh
+    
+    logger.info("MANUAL REFRESH TRIGGERED")
+    
     try:
-        data = scrape_all()
+        # Do the scraping
+        cached_data = scrape_all()
+        cache_timestamp = time.time()
+        last_refresh = time.strftime("%Y-%m-%d %H:%M:%S")
+        
+        logger.info(f"Refresh successful! {len(cached_data)} faculty")
+        
         return jsonify({
             "status": "success",
-            "data": data,
-            "count": len(data)
-        })
+            "message": f"Refreshed! Got {len(cached_data)} faculty",
+            "data": cached_data,
+            "count": len(cached_data),
+            "last_refresh": last_refresh
+        }), 200
     except Exception as e:
-        logger.error(f"Error: {e}")
+        logger.error(f"Refresh error: {e}")
         return jsonify({
             "status": "error",
             "message": str(e)
         }), 500
 
+# Endpoint 3: Health check
 @app.get("/api/health")
 def health():
-    return jsonify({"status": "healthy"})
+    return jsonify({"status": "healthy"}), 200
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))
