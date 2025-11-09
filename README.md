@@ -370,6 +370,6 @@ For issues or questions:
 
 **Last Updated**: November 10, 2025
 
-**Maintained by**: Your Name / Your Team
+**Maintained by**: Chaitanya Pullagura
 
 **Status**: ✅ Active & Maintained
