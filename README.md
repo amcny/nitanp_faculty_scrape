@@ -2,7 +2,7 @@
 
 A modern, responsive web application for browsing and managing faculty information from NIT Andhra Pradesh. Features live data scraping, caching, and real-time updates.
 
-## 🚀 Features
+## Features
 
 - **Live Faculty Data** - Real-time scraping from NIT AP website
 - **Smart Caching** - Instant load times with intelligent data caching
@@ -15,7 +15,7 @@ A modern, responsive web application for browsing and managing faculty informati
 - **Last Updated Timestamp** - See when data was last refreshed
 - **Professional UI** - Modern, clean design with wrapped department tabs
 
-## 📋 Tech Stack
+## Tech Stack
 
 ### Backend
 - **Framework**: Flask
@@ -44,7 +44,7 @@ nitap-faculty-scraper/
 └── README.md             # This file
 ```
 
-## 🔧 Installation & Setup
+## Installation & Setup
 
 ### Backend Setup (Render)
 
@@ -87,7 +87,7 @@ Configure the API URL in the frontend:
 const backendAPI = "https://your-render-url.onrender.com/api/faculty";
 ```
 
-## 📖 API Documentation
+## API Documentation
 
 ### Get Faculty Data (Cached)
 ```
@@ -139,7 +139,7 @@ Response:
 }
 ```
 
-## 🎯 Usage
+## Usage
 
 ### For Users
 
@@ -156,7 +156,7 @@ Response:
    - View faculty in selected department
 
 4. **Refresh Data**
-   - Click "🔄 Refresh" button
+   - Click "Refresh" button
    - Backend scrapes live data from NIT AP website
    - Wait 30-60 seconds for completion
    - Faculty data updates automatically
@@ -192,7 +192,7 @@ Response:
    # Render automatically redeploys
    ```
 
-## 🔄 How It Works
+## How It Works
 
 ### Data Flow
 
@@ -225,7 +225,7 @@ Response:
   - No timeout issues
   - Always available data
 
-## 📱 Responsive Design
+## Responsive Design
 
 - **Desktop (1024px+)**: 4-column grid, full UI
 - **Tablet (768px-1023px)**: 2-3 columns, optimized layout
@@ -233,7 +233,7 @@ Response:
 - **Header**: Auto-scales on all devices
 - **All Features**: Fully functional on mobile
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Issue: Timestamp not showing
 **Solution**: Clear browser cache and reload
@@ -259,7 +259,7 @@ from flask_cors import CORS
 CORS(app)
 ```
 
-## 📚 Dependencies
+## Dependencies
 
 See `requirements.txt`:
 - Flask 2.3.3
@@ -268,7 +268,7 @@ See `requirements.txt`:
 - flask-cors 4.0.0
 - gunicorn 21.2.0
 
-## 🚀 Deployment
+## Deployment
 
 ### Render Deployment Steps
 
@@ -289,7 +289,7 @@ Optional:
 PORT=8000 (default)
 ```
 
-## 📞 API Response Codes
+## API Response Codes
 
 | Code | Meaning |
 |------|---------|
@@ -297,21 +297,21 @@ PORT=8000 (default)
 | 404 | Not found |
 | 500 | Server error |
 
-## 🔐 Data Privacy
+## Data Privacy
 
 - No personal data stored on servers
 - Data scraped directly from NIT AP public website
 - Cache stored temporarily on server
 - CORS enabled for cross-origin requests
 
-## 📊 Performance
+## Performance
 
 - **Initial Load**: <100ms (cached data)
 - **Search**: Real-time filtering
 - **Refresh**: 30-60 seconds (live scrape)
 - **Mobile**: Optimized for all screen sizes
 
-## 🎨 UI Features
+## UI Features
 
 - Modern, professional design
 - Wrapped department tabs (no horizontal scroll)
@@ -321,7 +321,7 @@ PORT=8000 (default)
 - Clean typography and spacing
 - Professional color scheme
 
-## 🔄 Version History
+## Version History
 
 ### v1.0.0 (Current)
 - Initial release
@@ -332,7 +332,7 @@ PORT=8000 (default)
 - Search functionality
 - Timestamp tracking
 
-## 📝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create feature branch: `git checkout -b feature/your-feature`
@@ -340,17 +340,15 @@ PORT=8000 (default)
 4. Push to branch: `git push origin feature/your-feature`
 5. Submit pull request
 
-## 📄 License
+## License
 
 This project is open source and available under the MIT License.
 
-## 👥 Contributors
+## Contributors
 
-- Initial Development: Your Team
-- Contributor 1
-- Contributor 2
+- Initial Development: Myself
 
-## 📧 Support
+## Support
 
 For issues or questions:
 1. Check GitHub Issues
@@ -358,18 +356,15 @@ For issues or questions:
 3. Include browser/device information
 4. Attach screenshots if applicable
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - NIT Andhra Pradesh for faculty data
 - Render for hosting
 - Open source community for libraries
 
-## 🔗 Links
+## Links
 
-- **Website**: [Your website URL]
-- **Backend API**: https://your-render-url.onrender.com
-- **Frontend**: [Your frontend URL]
-- **GitHub**: https://github.com/your-username/nitap-faculty-scraper
+- **Website**: https://amcny.github.io/nitanp_faculty_scrape/
 
 ---
 
